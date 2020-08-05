@@ -1,3 +1,3 @@
-module github.com/interwolf/integer
+module github.com/interwolf/go-tests/integer
 
 go 1.14

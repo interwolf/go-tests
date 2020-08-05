@@ -1,4 +1,4 @@
-module github.com/interwolf/hello
+module github.com/interwolf/go-tests/hello
 
 go 1.14
 
