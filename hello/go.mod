@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/go-delve/delve v1.5.0 // indirect
+	github.com/interwolf/go-tests/integer v0.0.0-20200805044806-8b086e41634c // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/peterh/liner v1.2.0 // indirect
