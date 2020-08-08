@@ -9,7 +9,7 @@ import (
 type Bitcoin int
 
 // ErrWithdrawTooMuch when withdraw > balance
-var ErrWithdrawTooMuch = errors.New("withdraw amount > banance")
+var ErrWithdrawTooMuch = errors.New("withdraw amount > balance")
 
 // Wallet for bitcoin
 type Wallet struct {
