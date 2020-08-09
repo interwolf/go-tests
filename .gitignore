@@ -1,6 +1,7 @@
 go.sum
 debug.test
 
-di
+di/di
+mocking/mocking
 
 .vscode/
