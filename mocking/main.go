@@ -12,22 +12,15 @@ type Sleeper interface {
 	Sleep()
 }
 
-// SpySleeper records how many calls to its Sleep()
-type SpySleeper struct {
-	NumCalls int
+// ConfigurableSleeper allows specify duration and sleep func
+type ConfigurableSleeper struct {
+	duration  time.Duration
+	sleepFunc func(time.Duration)
 }
 
-// Sleep of SpySleeper
-func (s *SpySleeper) Sleep() {
-	s.NumCalls++
-}
-
-// DefaultSleeper is the real sleeper
-type DefaultSleeper struct{}
-
-// Sleep of DefaultSleeper call time.Sleep
-func (d *DefaultSleeper) Sleep() {
-	time.Sleep(2 * time.Second)
+// Sleep of ConfigurableSleeper sleeps duratin seconds
+func (c *ConfigurableSleeper) Sleep() {
+	c.sleepFunc(c.duration)
 }
 
 // Countdown prints 3\n 2\n 1\n go!\n
@@ -42,5 +35,6 @@ func Countdown(writer io.Writer, sleeper Sleeper) {
 }
 
 func main() {
-	Countdown(os.Stdout, &DefaultSleeper{})
+	sleeper := &ConfigurableSleeper{1 * time.Second, time.Sleep}
+	Countdown(os.Stdout, sleeper)
 }
