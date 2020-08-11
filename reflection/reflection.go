@@ -8,18 +8,36 @@ import (
 // Walk takes a struct x and calls fn for all strings found inside
 func Walk(x interface{}, fn func(string)) {
 	val := getValue(x)
+	// fmt.Printf("val: %v\n", val)
+
+	walkValue := func(value reflect.Value) {
+		Walk(value.Interface(), fn)
+	}
 
 	switch val.Kind() {
-	case reflect.Slice:
+	case reflect.String:
+		fn(val.String())
+	case reflect.Slice, reflect.Array:
 		for i := 0; i < val.Len(); i++ {
-			Walk(val.Index(i).Interface(), fn)
+			walkValue(val.Index(i))
 		}
 	case reflect.Struct:
 		for i := 0; i < val.NumField(); i++ {
-			Walk(val.Field(i).Interface(), fn)
+			walkValue(val.Field(i))
 		}
-	case reflect.String:
-		fn(val.String())
+	case reflect.Map:
+		for _, key := range val.MapKeys() {
+			walkValue(val.MapIndex(key))
+		}
+	case reflect.Chan:
+		for v, ok := val.Recv(); ok; v, ok = val.Recv() {
+			walkValue(v)
+		}
+	case reflect.Func:
+		results := val.Call(nil)
+		for _, r := range results {
+			walkValue(r)
+		}
 	}
 
 }
