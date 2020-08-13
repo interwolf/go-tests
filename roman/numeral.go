@@ -10,7 +10,21 @@ type RomanNumeral struct {
 	Symbol string
 }
 
-var importantRoman = []RomanNumeral{
+// RomanNumerals is a slice for RomanNumeral
+type RomanNumerals []RomanNumeral
+
+// ValueOf gets the int value of the symbol (if available)
+func (r RomanNumerals) ValueOf(symbols ...byte) int {
+	symbol := string(symbols)
+	for _, s := range r {
+		if s.Symbol == symbol {
+			return s.Value
+		}
+	}
+	return 0
+}
+
+var importantRoman = RomanNumerals{
 	{1000, "M"},
 	{900, "CM"},
 	{500, "D"},
@@ -41,7 +55,31 @@ func ConvertToRoman(arabic int) string {
 	return result.String()
 }
 
-// ConvertFromRoman converts arabic from Roman numeral
-func ConvertFromRoman(roman string) int {
-	return 0
+// ConvertToArabic converts arabic from Roman numeral
+func ConvertToArabic(roman string) int {
+	total := 0
+
+	for i := 0; i < len(roman); i++ {
+		symbol := roman[i]
+		if couldSub(i, symbol, roman) {
+			nextSymbol := roman[i+1]
+			// potential := []byte{symbol, nextSymbol}
+			value := importantRoman.ValueOf(symbol, nextSymbol)
+
+			if value != 0 {
+				total += value
+				i++
+			} else {
+				total += importantRoman.ValueOf(symbol)
+			}
+		} else {
+			total += importantRoman.ValueOf(symbol)
+		}
+	}
+
+	return total
+}
+
+func couldSub(index int, curr uint8, roman string) bool {
+	return index+1 < len(roman) && (curr == 'I' || curr == 'X' || curr == 'C')
 }

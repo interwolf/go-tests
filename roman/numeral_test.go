@@ -55,9 +55,9 @@ func TestRoman(t *testing.T) {
 	}
 
 	fmt.Println("============= ConvertFromRoman ==============")
-	for _, test := range testCases[:1] {
+	for _, test := range testCases {
 		t.Run(test.Description, func(t *testing.T) {
-			got := ConvertFromRoman(test.Roman)
+			got := ConvertToArabic(test.Roman)
 			want := test.Arabic
 
 			if got != want {
